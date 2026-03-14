@@ -3,7 +3,7 @@
 
 **Nesne Tabanlı Programlama II** dersi kapsamında geliştirilen bireysel final projesidir.
 
-**Öğrenci:** `[Ad Soyad]` — `[Öğrenci No]`
+**Öğrenci:** `[Berk Can Kapucu]` — `[243779058]`
 
 ---
 
