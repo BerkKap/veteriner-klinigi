@@ -13,11 +13,11 @@
 
 | Bilgi                  | Açıklama                                       |
 | :--------------------- | :--------------------------------------------- |
-| **Proje Adı**          | `[Projenizin adını buraya yazın]`              |
-| **Proje Konusu**       | `[Örn: Hastane Randevu Sistemi]`               |
-| **Kısa Açıklama**      | `[Projenizin ne yaptığını 1-2 cümleyle yazın]` |
-| **Tablo Sayısı**       | `[En az 3 ilişkili tablo]`                     |
-| **Planlanan Tablolar** | `[Örn: Hastalar, Doktorlar, Randevular]`       |
+| **Proje Adı**          | `[Veteriner Kliniği Yönetim Sistemi]`          |
+| **Proje Konusu**       | `[Veteriner klinik süreçlerinin yönetimi]`     |
+| **Kısa Açıklama**      | `[Sahip, hayvan ve muayene kayıtlarını katmanlı mimari ile yönetir.]` |
+| **Tablo Sayısı**       | `[3]`                                          |
+| **Planlanan Tablolar** | `[Sahipler, Hayvanlar, Muayeneler]`            |
 
 ---
 
