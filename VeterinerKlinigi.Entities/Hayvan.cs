@@ -1,0 +1,11 @@
+namespace VeterinerKlinigi.Entities
+{
+    public class Hayvan
+    {
+        public int HayvanId { get; set; }
+        public string Ad { get; set; } = string.Empty;
+        public string Tur { get; set; } = string.Empty;
+        public string Cins { get; set; } = string.Empty;
+        public int SahipId { get; set; }
+    }
+}
