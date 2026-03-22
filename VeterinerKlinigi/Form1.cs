@@ -19,26 +19,13 @@ namespace VeterinerKlinigi
 
         private void btnEkle_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtAd.Text) ||
-                string.IsNullOrWhiteSpace(txtSoyad.Text))
+            using var form = new SahipEkleForm();
+            var sonuc = form.ShowDialog();
+
+            if (sonuc == DialogResult.OK)
             {
-                MessageBox.Show("Ad ve Soyad zorunludur.");
-                return;
+                SahipleriListele();
             }
-
-            var sahip = new Sahip
-            {
-                Ad = txtAd.Text.Trim(),
-                Soyad = txtSoyad.Text.Trim(),
-                Telefon = txtTelefon.Text.Trim()
-            };
-
-            _sahipDal.SahipEkle(sahip);
-            SahipleriListele();
-
-            txtAd.Clear();
-            txtSoyad.Clear();
-            txtTelefon.Clear();
         }
 
         private void btnSil_Click(object sender, EventArgs e)
