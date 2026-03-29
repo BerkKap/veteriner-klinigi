@@ -8,41 +8,47 @@ namespace VeterinerKlinigi.DataAccess
         public List<Sahip> TumSahipleriGetir()
         {
             const string sorgu = """
-                                 SELECT SahipId, Ad, Soyad, Telefon
+                                 SELECT SahipId, Ad, Soyad, Telefon, CezaPuani
                                  FROM Sahipler
                                  ORDER BY SahipId
                                  """;
 
             var tablo = SqlHelper.ExecuteDataTable(sorgu);
-            var sahipler = new List<Sahip>();
+            return TabloyuSahipListesineDonustur(tablo);
+        }
 
-            foreach (System.Data.DataRow satir in tablo.Rows)
-            {
-                sahipler.Add(new Sahip
-                {
-                    SahipId = Convert.ToInt32(satir["SahipId"]),
-                    Ad = satir["Ad"]?.ToString() ?? string.Empty,
-                    Soyad = satir["Soyad"]?.ToString() ?? string.Empty,
-                    Telefon = satir["Telefon"]?.ToString() ?? string.Empty
-                });
-            }
+        public List<Sahip> SahipAra(string kelime)
+        {
+            const string sorgu = """
+                                 SELECT SahipId, Ad, Soyad, Telefon, CezaPuani
+                                 FROM Sahipler
+                                 WHERE Ad LIKE @kelime
+                                    OR Soyad LIKE @kelime
+                                    OR Telefon LIKE @kelime
+                                 ORDER BY SahipId
+                                 """;
 
-            return sahipler;
+            var tablo = SqlHelper.ExecuteDataTable(
+                sorgu,
+                new SqlParameter("@kelime", $"%{kelime}%"));
+
+            return TabloyuSahipListesineDonustur(tablo);
         }
 
         public int SahipEkle(Sahip sahip)
         {
             const string sorgu = """
-                                 INSERT INTO Sahipler (Ad, Soyad, Telefon)
+                                 INSERT INTO Sahipler (Ad, Soyad, Telefon, CezaPuani)
                                  OUTPUT INSERTED.SahipId
-                                 VALUES (@Ad, @Soyad, @Telefon)
+                                 VALUES (@Ad, @Soyad, @Telefon, @CezaPuani)
                                  """;
 
             var sonuc = SqlHelper.ExecuteScalar(
                 sorgu,
                 new SqlParameter("@Ad", sahip.Ad),
                 new SqlParameter("@Soyad", sahip.Soyad),
-                new SqlParameter("@Telefon", sahip.Telefon));
+                new SqlParameter("@Telefon", sahip.Telefon),
+                new SqlParameter("@CezaPuani", sahip.CezaPuani));
 
             return Convert.ToInt32(sonuc);
         }
@@ -53,7 +59,8 @@ namespace VeterinerKlinigi.DataAccess
                                  UPDATE Sahipler
                                  SET Ad = @Ad,
                                      Soyad = @Soyad,
-                                     Telefon = @Telefon
+                                     Telefon = @Telefon,
+                                     CezaPuani = @CezaPuani
                                  WHERE SahipId = @SahipId
                                  """;
 
@@ -62,7 +69,8 @@ namespace VeterinerKlinigi.DataAccess
                 new SqlParameter("@SahipId", sahip.SahipId),
                 new SqlParameter("@Ad", sahip.Ad),
                 new SqlParameter("@Soyad", sahip.Soyad),
-                new SqlParameter("@Telefon", sahip.Telefon));
+                new SqlParameter("@Telefon", sahip.Telefon),
+                new SqlParameter("@CezaPuani", sahip.CezaPuani));
 
             return etkilenenSatir > 0;
         }
@@ -76,6 +84,25 @@ namespace VeterinerKlinigi.DataAccess
                 new SqlParameter("@SahipId", sahipId));
 
             return etkilenenSatir > 0;
+        }
+
+        private static List<Sahip> TabloyuSahipListesineDonustur(System.Data.DataTable tablo)
+        {
+            var sahipler = new List<Sahip>();
+
+            foreach (System.Data.DataRow satir in tablo.Rows)
+            {
+                sahipler.Add(new Sahip
+                {
+                    SahipId = Convert.ToInt32(satir["SahipId"]),
+                    Ad = satir["Ad"]?.ToString() ?? string.Empty,
+                    Soyad = satir["Soyad"]?.ToString() ?? string.Empty,
+                    Telefon = satir["Telefon"]?.ToString() ?? string.Empty,
+                    CezaPuani = Convert.ToInt32(satir["CezaPuani"])
+                });
+            }
+
+            return sahipler;
         }
     }
 }

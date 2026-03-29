@@ -25,6 +25,8 @@ namespace VeterinerKlinigi
             MaximizeBox = false;
             MinimizeBox = false;
             StartPosition = FormStartPosition.CenterParent;
+
+            ThemeHelper.Uygula(this, sidebarEkle: true);
         }
 
         private void btnKaydet_Click(object sender, EventArgs e)
@@ -44,7 +46,8 @@ namespace VeterinerKlinigi
                 {
                     Ad = txtAd.Text.Trim(),
                     Soyad = txtSoyad.Text.Trim(),
-                    Telefon = txtTelefon.Text.Trim()
+                    Telefon = txtTelefon.Text.Trim(),
+                    CezaPuani = 0
                 };
 
                 var yeniId = _sahipDal.SahipEkle(sahip);

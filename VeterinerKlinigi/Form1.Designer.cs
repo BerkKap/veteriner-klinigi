@@ -7,6 +7,8 @@
         private Button btnListele;
         private Button btnEkle;
         private Button btnSil;
+        private Label lblAra;
+        private TextBox txtAra;
 
         protected override void Dispose(bool disposing)
         {
@@ -24,16 +26,18 @@
             btnListele = new Button();
             btnEkle = new Button();
             btnSil = new Button();
+            lblAra = new Label();
+            txtAra = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dgvSahipler).BeginInit();
             SuspendLayout();
             // 
             // dgvSahipler
             // 
             dgvSahipler.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvSahipler.Location = new Point(12, 12);
+            dgvSahipler.Location = new Point(12, 45);
             dgvSahipler.Name = "dgvSahipler";
             dgvSahipler.RowHeadersWidth = 51;
-            dgvSahipler.Size = new Size(545, 250);
+            dgvSahipler.Size = new Size(545, 217);
             dgvSahipler.TabIndex = 0;
             // 
             // btnListele
@@ -66,11 +70,30 @@
             btnSil.UseVisualStyleBackColor = true;
             btnSil.Click += btnSil_Click;
             // 
+            // lblAra
+            // 
+            lblAra.AutoSize = true;
+            lblAra.Location = new Point(12, 15);
+            lblAra.Name = "lblAra";
+            lblAra.Size = new Size(27, 15);
+            lblAra.TabIndex = 4;
+            lblAra.Text = "Ara:";
+            // 
+            // txtAra
+            // 
+            txtAra.Location = new Point(45, 12);
+            txtAra.Name = "txtAra";
+            txtAra.Size = new Size(266, 23);
+            txtAra.TabIndex = 5;
+            txtAra.TextChanged += txtAra_TextChanged;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(569, 322);
+            Controls.Add(txtAra);
+            Controls.Add(lblAra);
             Controls.Add(btnSil);
             Controls.Add(btnEkle);
             Controls.Add(btnListele);
@@ -79,6 +102,7 @@
             Text = "Veteriner Kliniği - Sahip Yönetimi";
             ((System.ComponentModel.ISupportInitialize)dgvSahipler).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
     }
 }

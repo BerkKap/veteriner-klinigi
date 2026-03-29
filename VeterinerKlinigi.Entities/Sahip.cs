@@ -6,5 +6,6 @@ namespace VeterinerKlinigi.Entities
         public string Ad { get; set; } = string.Empty;
         public string Soyad { get; set; } = string.Empty;
         public string Telefon { get; set; } = string.Empty;
+        public int CezaPuani { get; set; }
     }
 }
