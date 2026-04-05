@@ -35,6 +35,34 @@ namespace VeterinerKlinigi.DataAccess
             return TabloyuSahipListesineDonustur(tablo);
         }
 
+        public Sahip? GetById(int sahipId)
+        {
+            const string sorgu = """
+                                 SELECT SahipId, Ad, Soyad, Telefon, CezaPuani
+                                 FROM Sahipler
+                                 WHERE SahipId = @SahipId
+                                 """;
+
+            var tablo = SqlHelper.ExecuteDataTable(
+                sorgu,
+                new SqlParameter("@SahipId", sahipId));
+
+            if (tablo.Rows.Count == 0)
+            {
+                return null;
+            }
+
+            var satir = tablo.Rows[0];
+            return new Sahip
+            {
+                SahipId = Convert.ToInt32(satir["SahipId"]),
+                Ad = satir["Ad"]?.ToString() ?? string.Empty,
+                Soyad = satir["Soyad"]?.ToString() ?? string.Empty,
+                Telefon = satir["Telefon"]?.ToString() ?? string.Empty,
+                CezaPuani = Convert.ToInt32(satir["CezaPuani"])
+            };
+        }
+
         public int SahipEkle(Sahip sahip)
         {
             const string sorgu = """

@@ -133,5 +133,24 @@ namespace VeterinerKlinigi
                 DataPropertyName = "CezaPuani"
             });
         }
+
+        private void dgvSahipler_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+            {
+                return;
+            }
+
+            var seciliSatir = dgvSahipler.Rows[e.RowIndex];
+            var secilenId = Convert.ToInt32(seciliSatir.Cells["colSahipId"].Value);
+
+            using var form = new SahipGuncelleForm(secilenId);
+            var sonuc = form.ShowDialog();
+
+            if (sonuc == DialogResult.OK)
+            {
+                SahipleriListele();
+            }
+        }
     }
 }

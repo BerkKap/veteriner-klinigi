@@ -39,6 +39,7 @@
             dgvSahipler.RowHeadersWidth = 51;
             dgvSahipler.Size = new Size(545, 217);
             dgvSahipler.TabIndex = 0;
+            dgvSahipler.CellDoubleClick += dgvSahipler_CellDoubleClick;
             // 
             // btnListele
             // 
