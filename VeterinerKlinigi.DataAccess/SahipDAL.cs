@@ -8,7 +8,7 @@ namespace VeterinerKlinigi.DataAccess
         public List<Sahip> TumSahipleriGetir()
         {
             const string sorgu = """
-                                 SELECT SahipId, Ad, Soyad, Telefon, CezaPuani
+                                 SELECT SahipId, Ad, Soyad, Telefon, CezaPuani, ProfilResmi
                                  FROM Sahipler
                                  ORDER BY SahipId
                                  """;
@@ -20,7 +20,7 @@ namespace VeterinerKlinigi.DataAccess
         public List<Sahip> SahipAra(string kelime)
         {
             const string sorgu = """
-                                 SELECT SahipId, Ad, Soyad, Telefon, CezaPuani
+                                 SELECT SahipId, Ad, Soyad, Telefon, CezaPuani, ProfilResmi
                                  FROM Sahipler
                                  WHERE Ad LIKE @kelime
                                     OR Soyad LIKE @kelime
@@ -38,7 +38,7 @@ namespace VeterinerKlinigi.DataAccess
         public Sahip? GetById(int sahipId)
         {
             const string sorgu = """
-                                 SELECT SahipId, Ad, Soyad, Telefon, CezaPuani
+                                 SELECT SahipId, Ad, Soyad, Telefon, CezaPuani, ProfilResmi
                                  FROM Sahipler
                                  WHERE SahipId = @SahipId
                                  """;
@@ -59,16 +59,17 @@ namespace VeterinerKlinigi.DataAccess
                 Ad = satir["Ad"]?.ToString() ?? string.Empty,
                 Soyad = satir["Soyad"]?.ToString() ?? string.Empty,
                 Telefon = satir["Telefon"]?.ToString() ?? string.Empty,
-                CezaPuani = Convert.ToInt32(satir["CezaPuani"])
+                CezaPuani = Convert.ToInt32(satir["CezaPuani"]),
+                ProfilResmi = satir["ProfilResmi"]?.ToString() ?? "default.png"
             };
         }
 
         public int SahipEkle(Sahip sahip)
         {
             const string sorgu = """
-                                 INSERT INTO Sahipler (Ad, Soyad, Telefon, CezaPuani)
+                                 INSERT INTO Sahipler (Ad, Soyad, Telefon, CezaPuani, ProfilResmi)
                                  OUTPUT INSERTED.SahipId
-                                 VALUES (@Ad, @Soyad, @Telefon, @CezaPuani)
+                                 VALUES (@Ad, @Soyad, @Telefon, @CezaPuani, @ProfilResmi)
                                  """;
 
             var sonuc = SqlHelper.ExecuteScalar(
@@ -76,7 +77,8 @@ namespace VeterinerKlinigi.DataAccess
                 new SqlParameter("@Ad", sahip.Ad),
                 new SqlParameter("@Soyad", sahip.Soyad),
                 new SqlParameter("@Telefon", sahip.Telefon),
-                new SqlParameter("@CezaPuani", sahip.CezaPuani));
+                new SqlParameter("@CezaPuani", sahip.CezaPuani),
+                new SqlParameter("@ProfilResmi", sahip.ProfilResmi));
 
             return Convert.ToInt32(sonuc);
         }
@@ -88,7 +90,8 @@ namespace VeterinerKlinigi.DataAccess
                                  SET Ad = @Ad,
                                      Soyad = @Soyad,
                                      Telefon = @Telefon,
-                                     CezaPuani = @CezaPuani
+                                     CezaPuani = @CezaPuani,
+                                     ProfilResmi = @ProfilResmi
                                  WHERE SahipId = @SahipId
                                  """;
 
@@ -98,7 +101,8 @@ namespace VeterinerKlinigi.DataAccess
                 new SqlParameter("@Ad", sahip.Ad),
                 new SqlParameter("@Soyad", sahip.Soyad),
                 new SqlParameter("@Telefon", sahip.Telefon),
-                new SqlParameter("@CezaPuani", sahip.CezaPuani));
+                new SqlParameter("@CezaPuani", sahip.CezaPuani),
+                new SqlParameter("@ProfilResmi", sahip.ProfilResmi));
 
             return etkilenenSatir > 0;
         }
@@ -126,7 +130,8 @@ namespace VeterinerKlinigi.DataAccess
                     Ad = satir["Ad"]?.ToString() ?? string.Empty,
                     Soyad = satir["Soyad"]?.ToString() ?? string.Empty,
                     Telefon = satir["Telefon"]?.ToString() ?? string.Empty,
-                    CezaPuani = Convert.ToInt32(satir["CezaPuani"])
+                    CezaPuani = Convert.ToInt32(satir["CezaPuani"]),
+                    ProfilResmi = satir["ProfilResmi"]?.ToString() ?? "default.png"
                 });
             }
 

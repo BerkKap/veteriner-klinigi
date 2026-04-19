@@ -92,14 +92,16 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(569, 322);
+            ClientSize = new Size(760, 420);
             Controls.Add(txtAra);
             Controls.Add(lblAra);
             Controls.Add(btnSil);
             Controls.Add(btnEkle);
             Controls.Add(btnListele);
             Controls.Add(dgvSahipler);
+            MinimumSize = new Size(760, 420);
             Name = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Veteriner Kliniği - Sahip Yönetimi";
             ((System.ComponentModel.ISupportInitialize)dgvSahipler).EndInit();
             ResumeLayout(false);

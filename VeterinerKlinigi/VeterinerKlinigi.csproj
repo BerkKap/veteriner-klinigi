@@ -9,8 +9,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\Default.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\Default.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\VeterinerKlinigi.DataAccess\VeterinerKlinigi.DataAccess.csproj" />
     <ProjectReference Include="..\VeterinerKlinigi.Entities\VeterinerKlinigi.Entities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\default.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

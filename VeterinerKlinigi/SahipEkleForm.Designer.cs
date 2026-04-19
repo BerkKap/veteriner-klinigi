@@ -11,6 +11,9 @@
         private TextBox txtTelefon;
         private Button btnKaydet;
         private Button btnIptal;
+        private PictureBox pbProfil;
+        private Button btnResimSec;
+        private Label lblProfil;
 
         protected override void Dispose(bool disposing)
         {
@@ -32,6 +35,10 @@
             txtTelefon = new TextBox();
             btnKaydet = new Button();
             btnIptal = new Button();
+            pbProfil = new PictureBox();
+            btnResimSec = new Button();
+            lblProfil = new Label();
+            ((System.ComponentModel.ISupportInitialize)pbProfil).BeginInit();
             SuspendLayout();
             // 
             // lblAd
@@ -84,29 +91,61 @@
             // 
             // btnKaydet
             // 
-            btnKaydet.Location = new Point(88, 132);
+            btnKaydet.Location = new Point(88, 186);
             btnKaydet.Name = "btnKaydet";
             btnKaydet.Size = new Size(100, 30);
-            btnKaydet.TabIndex = 6;
+            btnKaydet.TabIndex = 8;
             btnKaydet.Text = "Kaydet";
             btnKaydet.UseVisualStyleBackColor = true;
             btnKaydet.Click += btnKaydet_Click;
             // 
             // btnIptal
             // 
-            btnIptal.Location = new Point(208, 132);
+            btnIptal.Location = new Point(208, 186);
             btnIptal.Name = "btnIptal";
             btnIptal.Size = new Size(100, 30);
-            btnIptal.TabIndex = 7;
+            btnIptal.TabIndex = 9;
             btnIptal.Text = "İptal";
             btnIptal.UseVisualStyleBackColor = true;
             btnIptal.Click += btnIptal_Click;
+            // 
+            // pbProfil
+            // 
+            pbProfil.BorderStyle = BorderStyle.FixedSingle;
+            pbProfil.Location = new Point(370, 24);
+            pbProfil.Name = "pbProfil";
+            pbProfil.Size = new Size(140, 140);
+            pbProfil.SizeMode = PictureBoxSizeMode.Zoom;
+            pbProfil.TabIndex = 10;
+            pbProfil.TabStop = false;
+            // 
+            // btnResimSec
+            // 
+            btnResimSec.Location = new Point(370, 186);
+            btnResimSec.Name = "btnResimSec";
+            btnResimSec.Size = new Size(140, 30);
+            btnResimSec.TabIndex = 7;
+            btnResimSec.Text = "Resim Seç";
+            btnResimSec.UseVisualStyleBackColor = true;
+            btnResimSec.Click += btnResimSec_Click;
+            // 
+            // lblProfil
+            // 
+            lblProfil.AutoSize = true;
+            lblProfil.Location = new Point(370, 6);
+            lblProfil.Name = "lblProfil";
+            lblProfil.Size = new Size(58, 15);
+            lblProfil.TabIndex = 6;
+            lblProfil.Text = "Profil Foto";
             // 
             // SahipEkleForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(344, 186);
+            ClientSize = new Size(620, 241);
+            Controls.Add(lblProfil);
+            Controls.Add(btnResimSec);
+            Controls.Add(pbProfil);
             Controls.Add(btnIptal);
             Controls.Add(btnKaydet);
             Controls.Add(txtTelefon);
@@ -117,8 +156,20 @@
             Controls.Add(lblAd);
             Name = "SahipEkleForm";
             Text = "Sahip Ekle";
+            ((System.ComponentModel.ISupportInitialize)pbProfil).EndInit();
             ResumeLayout(false);
             PerformLayout();
+
+            pbProfil.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnResimSec.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            lblProfil.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+
+            txtAd.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtSoyad.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtTelefon.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+
+            btnKaydet.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnIptal.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.Data.SqlClient;
 using VeterinerKlinigi.DataAccess;
 using VeterinerKlinigi.Entities;
@@ -8,6 +9,7 @@ namespace VeterinerKlinigi
     {
         private readonly SahipDAL _sahipDal = new();
         private readonly int _secilenSahipId;
+        private string _profilResmiDosyaAdi = "default.png";
 
         public SahipGuncelleForm(int sahipId)
         {
@@ -31,6 +33,32 @@ namespace VeterinerKlinigi
             txtSoyad.Text = sahip.Soyad;
             txtTelefon.Text = sahip.Telefon;
             txtCezaPuani.Text = sahip.CezaPuani.ToString();
+
+            _profilResmiDosyaAdi = string.IsNullOrWhiteSpace(sahip.ProfilResmi)
+                ? "default.png"
+                : sahip.ProfilResmi;
+
+            ProfilResminiGoster(_profilResmiDosyaAdi);
+        }
+
+        private void ProfilResminiGoster(string dosyaAdi)
+        {
+            var imagesKlasoru = Path.Combine(Application.StartupPath, "Images");
+            var resimYolu = Path.Combine(imagesKlasoru, dosyaAdi);
+            var varsayilanYol = Path.Combine(imagesKlasoru, "default.png");
+
+            if (File.Exists(resimYolu))
+            {
+                pbProfil.ImageLocation = resimYolu;
+            }
+            else if (File.Exists(varsayilanYol))
+            {
+                pbProfil.ImageLocation = varsayilanYol;
+            }
+            else
+            {
+                pbProfil.ImageLocation = null;
+            }
         }
 
         private void btnGuncelle_Click(object sender, EventArgs e)
@@ -55,7 +83,8 @@ namespace VeterinerKlinigi
                     Ad = txtAd.Text.Trim(),
                     Soyad = txtSoyad.Text.Trim(),
                     Telefon = txtTelefon.Text.Trim(),
-                    CezaPuani = cezaPuani
+                    CezaPuani = cezaPuani,
+                    ProfilResmi = _profilResmiDosyaAdi
                 };
 
                 var basarili = _sahipDal.SahipGuncelle(guncelSahip);
