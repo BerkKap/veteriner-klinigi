@@ -29,7 +29,7 @@ namespace VeterinerKlinigi
             MinimizeBox = true;
             StartPosition = FormStartPosition.CenterParent;
 
-            ThemeHelper.Uygula(this, sidebarEkle: true);
+            ThemeHelper.Uygula(this);
 
             ClientSize = new Size(620, 241);
             MinimumSize = new Size(620, 280);

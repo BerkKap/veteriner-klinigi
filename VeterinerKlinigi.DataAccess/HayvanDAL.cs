@@ -109,5 +109,42 @@ namespace VeterinerKlinigi.DataAccess
 
             return affectedRows > 0;
         }
+
+        public List<HayvanDetayDTO> GetAllDetayli()
+        {
+            const string query = """
+                         SELECT h.HayvanId,
+                                h.Ad AS HayvanAdi,
+                                h.Tur,
+                                h.Cins,
+                                s.SahipId,
+                                CONCAT(s.Ad, ' ', s.Soyad) AS SahipAdSoyad,
+                                s.Telefon AS SahipTelefon,
+                                s.ProfilResmi
+                         FROM Hayvanlar h
+                         INNER JOIN Sahipler s ON s.SahipId = h.SahipId
+                         ORDER BY h.HayvanId
+                         """;
+
+            var table = SqlHelper.ExecuteDataTable(query);
+            var list = new List<HayvanDetayDTO>();
+
+            foreach (System.Data.DataRow row in table.Rows)
+            {
+                list.Add(new HayvanDetayDTO
+                {
+                    HayvanId = Convert.ToInt32(row["HayvanId"]),
+                    HayvanAdi = row["HayvanAdi"]?.ToString() ?? string.Empty,
+                    Tur = row["Tur"]?.ToString() ?? string.Empty,
+                    Cins = row["Cins"]?.ToString() ?? string.Empty,
+                    SahipId = Convert.ToInt32(row["SahipId"]),
+                    SahipAdSoyad = row["SahipAdSoyad"]?.ToString() ?? string.Empty,
+                    SahipTelefon = row["SahipTelefon"]?.ToString() ?? string.Empty,
+                    ProfilResmi = row["ProfilResmi"]?.ToString() ?? "default.png"
+                });
+            }
+
+            return list;
+        }
     }
 }

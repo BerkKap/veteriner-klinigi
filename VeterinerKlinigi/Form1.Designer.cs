@@ -7,6 +7,7 @@
         private Button btnListele;
         private Button btnEkle;
         private Button btnSil;
+        private Button btnHayvanlar;
         private Label lblAra;
         private TextBox txtAra;
 
@@ -26,6 +27,7 @@
             btnListele = new Button();
             btnEkle = new Button();
             btnSil = new Button();
+            btnHayvanlar = new Button();
             lblAra = new Label();
             txtAra = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dgvSahipler).BeginInit();
@@ -71,6 +73,16 @@
             btnSil.UseVisualStyleBackColor = true;
             btnSil.Click += btnSil_Click;
             // 
+            // btnHayvanlar
+            // 
+            btnHayvanlar.Location = new Point(486, 276);
+            btnHayvanlar.Name = "btnHayvanlar";
+            btnHayvanlar.Size = new Size(140, 32);
+            btnHayvanlar.TabIndex = 6;
+            btnHayvanlar.Text = "Hayvanlar";
+            btnHayvanlar.UseVisualStyleBackColor = true;
+            btnHayvanlar.Click += btnHayvanlar_Click;
+            // 
             // lblAra
             // 
             lblAra.AutoSize = true;
@@ -98,6 +110,7 @@
             Controls.Add(btnSil);
             Controls.Add(btnEkle);
             Controls.Add(btnListele);
+            Controls.Add(btnHayvanlar);
             Controls.Add(dgvSahipler);
             MinimumSize = new Size(760, 420);
             Name = "Form1";

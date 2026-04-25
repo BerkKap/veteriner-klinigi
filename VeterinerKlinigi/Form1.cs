@@ -10,7 +10,7 @@ namespace VeterinerKlinigi
         public Form1()
         {
             InitializeComponent();
-            ThemeHelper.Uygula(this, sidebarEkle: true);
+            ThemeHelper.Uygula(this);
             GridiAyarla();
             SahipleriListele();
         }
@@ -151,6 +151,12 @@ namespace VeterinerKlinigi
             {
                 SahipleriListele();
             }
+        }
+
+        private void btnHayvanlar_Click(object sender, EventArgs e)
+        {
+            using var form = new HayvanListesiForm();
+            form.ShowDialog();
         }
     }
 }
