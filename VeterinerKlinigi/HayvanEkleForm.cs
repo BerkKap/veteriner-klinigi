@@ -58,7 +58,11 @@ namespace VeterinerKlinigi
                     Ad = txtAd.Text.Trim(),
                     Tur = txtTur.Text.Trim(),
                     Cins = txtCins.Text.Trim(),
-                    SahipId = Convert.ToInt32(cmbSahip.SelectedValue)
+                    Yas = nudYas.Value > 0 ? Convert.ToInt32(nudYas.Value) : null,
+                    Renk = txtRenk.Text.Trim(),
+                    SahipId = Convert.ToInt32(cmbSahip.SelectedValue),
+                    KayitTarihi = DateTime.Now,
+                    MuayeneSayisi = 0
                 };
 
                 var yeniId = _hayvanDal.Add(hayvan);

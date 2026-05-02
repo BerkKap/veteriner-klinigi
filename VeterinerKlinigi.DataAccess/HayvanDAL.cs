@@ -8,7 +8,7 @@ namespace VeterinerKlinigi.DataAccess
         public List<Hayvan> GetAll()
         {
             const string query = """
-                                 SELECT HayvanId, Ad, Tur, Cins, SahipId
+                                 SELECT HayvanId, Ad, Tur, Cins, Yas, Renk, SahipId, KayitTarihi, MuayeneSayisi
                                  FROM Hayvanlar
                                  ORDER BY HayvanId
                                  """;
@@ -24,7 +24,11 @@ namespace VeterinerKlinigi.DataAccess
                     Ad = row["Ad"]?.ToString() ?? string.Empty,
                     Tur = row["Tur"]?.ToString() ?? string.Empty,
                     Cins = row["Cins"]?.ToString() ?? string.Empty,
-                    SahipId = Convert.ToInt32(row["SahipId"])
+                    Yas = row["Yas"] == DBNull.Value ? null : Convert.ToInt32(row["Yas"]),
+                    Renk = row["Renk"]?.ToString() ?? string.Empty,
+                    SahipId = Convert.ToInt32(row["SahipId"]),
+                    KayitTarihi = row["KayitTarihi"] == DBNull.Value ? null : Convert.ToDateTime(row["KayitTarihi"]),
+                    MuayeneSayisi = row["MuayeneSayisi"] == DBNull.Value ? 0 : Convert.ToInt32(row["MuayeneSayisi"])
                 });
             }
 
@@ -34,7 +38,7 @@ namespace VeterinerKlinigi.DataAccess
         public Hayvan? GetById(int hayvanId)
         {
             const string query = """
-                                 SELECT HayvanId, Ad, Tur, Cins, SahipId
+                                 SELECT HayvanId, Ad, Tur, Cins, Yas, Renk, SahipId, KayitTarihi, MuayeneSayisi
                                  FROM Hayvanlar
                                  WHERE HayvanId = @HayvanId
                                  """;
@@ -55,16 +59,20 @@ namespace VeterinerKlinigi.DataAccess
                 Ad = row["Ad"]?.ToString() ?? string.Empty,
                 Tur = row["Tur"]?.ToString() ?? string.Empty,
                 Cins = row["Cins"]?.ToString() ?? string.Empty,
-                SahipId = Convert.ToInt32(row["SahipId"])
+                Yas = row["Yas"] == DBNull.Value ? null : Convert.ToInt32(row["Yas"]),
+                Renk = row["Renk"]?.ToString() ?? string.Empty,
+                SahipId = Convert.ToInt32(row["SahipId"]),
+                KayitTarihi = row["KayitTarihi"] == DBNull.Value ? null : Convert.ToDateTime(row["KayitTarihi"]),
+                MuayeneSayisi = row["MuayeneSayisi"] == DBNull.Value ? 0 : Convert.ToInt32(row["MuayeneSayisi"])
             };
         }
 
         public int Add(Hayvan hayvan)
         {
             const string query = """
-                                 INSERT INTO Hayvanlar (Ad, Tur, Cins, SahipId)
+                                 INSERT INTO Hayvanlar (Ad, Tur, Cins, Yas, Renk, SahipId, KayitTarihi, MuayeneSayisi)
                                  OUTPUT INSERTED.HayvanId
-                                 VALUES (@Ad, @Tur, @Cins, @SahipId)
+                                 VALUES (@Ad, @Tur, @Cins, @Yas, @Renk, @SahipId, @KayitTarihi, @MuayeneSayisi)
                                  """;
 
             var result = SqlHelper.ExecuteScalar(
@@ -72,7 +80,11 @@ namespace VeterinerKlinigi.DataAccess
                 new SqlParameter("@Ad", hayvan.Ad),
                 new SqlParameter("@Tur", hayvan.Tur),
                 new SqlParameter("@Cins", hayvan.Cins),
-                new SqlParameter("@SahipId", hayvan.SahipId));
+                new SqlParameter("@Yas", hayvan.Yas.HasValue ? hayvan.Yas.Value : (object)DBNull.Value),
+                new SqlParameter("@Renk", string.IsNullOrWhiteSpace(hayvan.Renk) ? (object)DBNull.Value : hayvan.Renk),
+                new SqlParameter("@SahipId", hayvan.SahipId),
+                new SqlParameter("@KayitTarihi", hayvan.KayitTarihi ?? DateTime.Now),
+                new SqlParameter("@MuayeneSayisi", hayvan.MuayeneSayisi));
 
             return Convert.ToInt32(result);
         }
@@ -84,7 +96,10 @@ namespace VeterinerKlinigi.DataAccess
                                  SET Ad = @Ad,
                                      Tur = @Tur,
                                      Cins = @Cins,
-                                     SahipId = @SahipId
+                                     Yas = @Yas,
+                                     Renk = @Renk,
+                                     SahipId = @SahipId,
+                                     MuayeneSayisi = @MuayeneSayisi
                                  WHERE HayvanId = @HayvanId
                                  """;
 
@@ -94,7 +109,10 @@ namespace VeterinerKlinigi.DataAccess
                 new SqlParameter("@Ad", hayvan.Ad),
                 new SqlParameter("@Tur", hayvan.Tur),
                 new SqlParameter("@Cins", hayvan.Cins),
-                new SqlParameter("@SahipId", hayvan.SahipId));
+                new SqlParameter("@Yas", hayvan.Yas.HasValue ? hayvan.Yas.Value : (object)DBNull.Value),
+                new SqlParameter("@Renk", string.IsNullOrWhiteSpace(hayvan.Renk) ? (object)DBNull.Value : hayvan.Renk),
+                new SqlParameter("@SahipId", hayvan.SahipId),
+                new SqlParameter("@MuayeneSayisi", hayvan.MuayeneSayisi));
 
             return affectedRows > 0;
         }
@@ -117,7 +135,11 @@ namespace VeterinerKlinigi.DataAccess
                                 h.Ad AS HayvanAdi,
                                 h.Tur,
                                 h.Cins,
-                                s.SahipId,
+                                h.Yas,
+                                h.Renk,
+                                h.SahipId,
+                                h.KayitTarihi,
+                                h.MuayeneSayisi,
                                 CONCAT(s.Ad, ' ', s.Soyad) AS SahipAdSoyad,
                                 s.Telefon AS SahipTelefon,
                                 s.ProfilResmi
@@ -137,7 +159,11 @@ namespace VeterinerKlinigi.DataAccess
                     HayvanAdi = row["HayvanAdi"]?.ToString() ?? string.Empty,
                     Tur = row["Tur"]?.ToString() ?? string.Empty,
                     Cins = row["Cins"]?.ToString() ?? string.Empty,
+                    Yas = row["Yas"] == DBNull.Value ? null : Convert.ToInt32(row["Yas"]),
+                    Renk = row["Renk"]?.ToString() ?? string.Empty,
                     SahipId = Convert.ToInt32(row["SahipId"]),
+                    KayitTarihi = row["KayitTarihi"] == DBNull.Value ? null : Convert.ToDateTime(row["KayitTarihi"]),
+                    MuayeneSayisi = row["MuayeneSayisi"] == DBNull.Value ? 0 : Convert.ToInt32(row["MuayeneSayisi"]),
                     SahipAdSoyad = row["SahipAdSoyad"]?.ToString() ?? string.Empty,
                     SahipTelefon = row["SahipTelefon"]?.ToString() ?? string.Empty,
                     ProfilResmi = row["ProfilResmi"]?.ToString() ?? "default.png"
