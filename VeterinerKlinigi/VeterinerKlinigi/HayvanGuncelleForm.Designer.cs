@@ -1,6 +1,6 @@
 namespace VeterinerKlinigi
 {
-    partial class HayvanEkleForm
+    partial class HayvanGuncelleForm
     {
         private System.ComponentModel.IContainer components = null;
         private Label lblAd;
@@ -26,7 +26,6 @@ namespace VeterinerKlinigi
             {
                 components.Dispose();
             }
-
             base.Dispose(disposing);
         }
 
@@ -189,7 +188,7 @@ namespace VeterinerKlinigi
             btnIptal.UseVisualStyleBackColor = true;
             btnIptal.Click += btnIptal_Click;
             // 
-            // HayvanEkleForm
+            // HayvanGuncelleForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -210,10 +209,9 @@ namespace VeterinerKlinigi
             Controls.Add(lblCins);
             Controls.Add(lblTur);
             Controls.Add(lblAd);
-            Name = "HayvanEkleForm";
-            StartPosition = FormStartPosition.CenterParent;
-            Text = "Hayvan Ekle";
-            Load += HayvanEkleForm_Load;
+            Name = "HayvanGuncelleForm";
+            Text = "Hayvan Güncelle";
+            Load += HayvanGuncelleForm_Load;
             ((System.ComponentModel.ISupportInitialize)nudYas).EndInit();
             ResumeLayout(false);
             PerformLayout();

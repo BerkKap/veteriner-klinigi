@@ -29,4 +29,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="VeterinerKlinigi.mdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -169,5 +169,34 @@ namespace VeterinerKlinigi.DataAccess
                 throw new Exception("Muayene ekleme baþarýsýz. Ýþlemler geri alýndý.", ex);
             }
         }
+        public List<Muayene> GetByHayvanId(int hayvanId)
+        {
+            const string query = """
+                                 SELECT MuayeneId, HayvanId, MuayeneTarihi, Sikayet, Bulgu, Tedavi, Ucret, KayitTarihi
+                                 FROM Muayeneler
+                                 WHERE HayvanId = @HayvanId
+                                 ORDER BY MuayeneTarihi DESC
+                                 """;
+
+            var table = SqlHelper.ExecuteDataTable(query, new SqlParameter("@HayvanId", hayvanId));
+            var list = new List<Muayene>();
+
+            foreach (System.Data.DataRow row in table.Rows)
+            {
+                list.Add(new Muayene
+                {
+                    MuayeneId = Convert.ToInt32(row["MuayeneId"]),
+                    HayvanId = Convert.ToInt32(row["HayvanId"]),
+                    MuayeneTarihi = Convert.ToDateTime(row["MuayeneTarihi"]),
+                    Sikayet = row["Sikayet"]?.ToString() ?? string.Empty,
+                    Bulgu = row["Bulgu"]?.ToString() ?? string.Empty,
+                    Tedavi = row["Tedavi"]?.ToString() ?? string.Empty,
+                    Ucret = Convert.ToDecimal(row["Ucret"]),
+                    KayitTarihi = row["KayitTarihi"] == DBNull.Value ? null : Convert.ToDateTime(row["KayitTarihi"])
+                });
+            }
+
+            return list;
+        }
     }
 }

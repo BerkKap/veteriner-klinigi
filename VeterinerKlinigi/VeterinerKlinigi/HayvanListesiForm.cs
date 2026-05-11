@@ -7,14 +7,16 @@ namespace VeterinerKlinigi
     public partial class HayvanListesiForm : Form
     {
         private readonly HayvanDAL _hayvanDal = new();
+        
+        // 'Gerekli' yada null uyarýlarýný kapatmak için = new() atandý veya ? eklenebilir.
+        private List<HayvanDetayDTO> _tumHayvanlar = new(); 
 
         public HayvanListesiForm()
         {
             InitializeComponent();
             ThemeHelper.Uygula(this);
-
-            ClientSize = new Size(1080, 430);
-            MinimumSize = new Size(1080, 470);
+            ClientSize = new Size(1250, 450);
+            MinimumSize = new Size(1150, 470);
 
             GridiAyarla();
             HayvanlariListele();
@@ -28,49 +30,70 @@ namespace VeterinerKlinigi
         private void btnEkle_Click(object sender, EventArgs e)
         {
             using var form = new HayvanEkleForm();
-            var sonuc = form.ShowDialog();
-
-            if (sonuc == DialogResult.OK)
-            {
+            if (form.ShowDialog() == DialogResult.OK)
                 HayvanlariListele();
-            }
         }
 
         private void btnMuayeneEkle_Click(object sender, EventArgs e)
         {
             using var form = new MuayeneEkleForm();
-            var sonuc = form.ShowDialog();
-
-            if (sonuc == DialogResult.OK)
-            {
+            if (form.ShowDialog() == DialogResult.OK)
                 HayvanlariListele();
-            }
         }
 
+        // Ana Listeleme iþlemi
         private void HayvanlariListele()
         {
-            dgvHayvanlar.DataSource = null;
-            dgvHayvanlar.DataSource = _hayvanDal.GetAllDetayli();
+            _tumHayvanlar = _hayvanDal.GetAllDetayli(); 
+            // Eðer textbox'ýmýz oluþturulduysa metnini alýp filtreleme baþlatýrýz
+            AramayiUygula(txtArama != null ? txtArama.Text : "");
+        }
 
-            if (dgvHayvanlar.Rows.Count > 0 &&
-                dgvHayvanlar.Rows[0].DataBoundItem is HayvanDetayDTO dto)
+        // Tasarým ekranýnda Textbox'a çift týkladýðýnýzda oluþan yer burasýdýr:
+        private void txtArama_TextChanged(object sender, EventArgs e)
+        {
+            // TextBox objesinin null olma ihtimaline karþý null denetimi (?) ekledik
+            AramayiUygula(txtArama?.Text ?? "");
+        }
+
+        private void AramayiUygula(string anahtarKelime)
+        {
+            if (_tumHayvanlar == null) return;
+
+            dgvHayvanlar.DataSource = null;
+
+            if (string.IsNullOrWhiteSpace(anahtarKelime))
+            {
+                dgvHayvanlar.DataSource = _tumHayvanlar;
+            }
+            else
+            {
+                var aranan = anahtarKelime.ToLower();
+                var filtrelenmisListe = _tumHayvanlar.Where(h => 
+                    h.HayvanAdi.ToLower().Contains(aranan) || 
+                    h.Tur.ToLower().Contains(aranan) || 
+                    h.SahipAdSoyad.ToLower().Contains(aranan) 
+                ).ToList();
+
+                dgvHayvanlar.DataSource = filtrelenmisListe;
+            }
+
+            if (dgvHayvanlar.Rows.Count > 0 && dgvHayvanlar.Rows[0].DataBoundItem is HayvanDetayDTO dto)
             {
                 SahipResminiGoster(dto.ProfilResmi);
             }
             else
             {
-                SahipResminiGoster("default.png");
+                SahipResminiGoster(null);
             }
         }
 
         private void dgvHayvanlar_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvHayvanlar.CurrentRow?.DataBoundItem is not HayvanDetayDTO dto)
+            if (dgvHayvanlar.CurrentRow?.DataBoundItem is HayvanDetayDTO dto)
             {
-                return;
+                SahipResminiGoster(dto.ProfilResmi);
             }
-
-            SahipResminiGoster(dto.ProfilResmi);
         }
 
         private static string VarsayilanResimYolu()
@@ -86,17 +109,11 @@ namespace VeterinerKlinigi
             var varsayilanYol = VarsayilanResimYolu();
 
             if (File.Exists(resimYolu))
-            {
                 pbSahipProfil.ImageLocation = resimYolu;
-            }
             else if (File.Exists(varsayilanYol))
-            {
                 pbSahipProfil.ImageLocation = varsayilanYol;
-            }
             else
-            {
                 pbSahipProfil.ImageLocation = null;
-            }
         }
 
         private void GridiAyarla()
@@ -110,124 +127,49 @@ namespace VeterinerKlinigi
             dgvHayvanlar.RowHeadersVisible = false;
             dgvHayvanlar.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            if (dgvHayvanlar.Columns.Count > 0)
-            {
-                return;
-            }
+            if (dgvHayvanlar.Columns.Count > 0) return;
 
-            dgvHayvanlar.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colHayvanId",
-                HeaderText = "Hayvan Id",
-                DataPropertyName = "HayvanId",
-                FillWeight = 70,
-                MinimumWidth = 70
-            });
-
-            dgvHayvanlar.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colHayvanAdi",
-                HeaderText = "Ad",
-                DataPropertyName = "HayvanAdi",
-                FillWeight = 110,
-                MinimumWidth = 90
-            });
-
-            dgvHayvanlar.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colTur",
-                HeaderText = "Tür",
-                DataPropertyName = "Tur",
-                FillWeight = 90,
-                MinimumWidth = 80
-            });
-
-            dgvHayvanlar.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colCins",
-                HeaderText = "Cins",
-                DataPropertyName = "Cins",
-                FillWeight = 130,
-                MinimumWidth = 110
-            });
-
-            dgvHayvanlar.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colYas",
-                HeaderText = "Yaþ",
-                DataPropertyName = "Yas",
-                FillWeight = 70,
-                MinimumWidth = 60
-            });
-
-            dgvHayvanlar.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colRenk",
-                HeaderText = "Renk",
-                DataPropertyName = "Renk",
-                FillWeight = 90,
-                MinimumWidth = 80
-            });
-
-            dgvHayvanlar.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colMuayeneSayisi",
-                HeaderText = "Muayene Sayýsý",
-                DataPropertyName = "MuayeneSayisi",
-                FillWeight = 100,
-                MinimumWidth = 90
-            });
-
-            dgvHayvanlar.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colSahipAdSoyad",
-                HeaderText = "Sahip",
-                DataPropertyName = "SahipAdSoyad",
-                FillWeight = 140,
-                MinimumWidth = 120
-            });
-
-            dgvHayvanlar.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colSahipTelefon",
-                HeaderText = "Sahip Telefon",
-                DataPropertyName = "SahipTelefon",
-                FillWeight = 120,
-                MinimumWidth = 110
-            });
+            dgvHayvanlar.Columns.Add(new DataGridViewTextBoxColumn { Name = "colHayvanId", HeaderText = "Id", DataPropertyName = "HayvanId", FillWeight = 50 });
+            dgvHayvanlar.Columns.Add(new DataGridViewTextBoxColumn { Name = "colHayvanAdi", HeaderText = "Ad", DataPropertyName = "HayvanAdi", FillWeight = 110 });
+            dgvHayvanlar.Columns.Add(new DataGridViewTextBoxColumn { Name = "colTur", HeaderText = "Tür", DataPropertyName = "Tur", FillWeight = 90 });
+            dgvHayvanlar.Columns.Add(new DataGridViewTextBoxColumn { Name = "colCins", HeaderText = "Cins", DataPropertyName = "Cins", FillWeight = 110 });
+            dgvHayvanlar.Columns.Add(new DataGridViewTextBoxColumn { Name = "colCinsiyet", HeaderText = "Cinsiyet", DataPropertyName = "Cinsiyet", FillWeight = 85 });
+            dgvHayvanlar.Columns.Add(new DataGridViewTextBoxColumn { Name = "colYas", HeaderText = "Yaþ", DataPropertyName = "Yas", FillWeight = 60 });
+            dgvHayvanlar.Columns.Add(new DataGridViewTextBoxColumn { Name = "colRenk", HeaderText = "Renk", DataPropertyName = "Renk", FillWeight = 90 });
+            dgvHayvanlar.Columns.Add(new DataGridViewTextBoxColumn { Name = "colMuayeneSayisi", HeaderText = "Muayene", DataPropertyName = "MuayeneSayisi", FillWeight = 80 });
+            dgvHayvanlar.Columns.Add(new DataGridViewTextBoxColumn { Name = "colSahipAdSoyad", HeaderText = "Sahip", DataPropertyName = "SahipAdSoyad", FillWeight = 140 });
+            dgvHayvanlar.Columns.Add(new DataGridViewTextBoxColumn { Name = "colSahipTelefon", HeaderText = "Telefon", DataPropertyName = "SahipTelefon", FillWeight = 120 });
         }
 
         private void btnSil_Click(object sender, EventArgs e)
         {
-            if (dgvHayvanlar.CurrentRow?.DataBoundItem is not HayvanDetayDTO secilenHayvan)
-            {
-                MessageBox.Show("Lütfen silmek için bir hayvan seçiniz.", "Uyarý", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            if (dgvHayvanlar.CurrentRow?.DataBoundItem is not HayvanDetayDTO secilenHayvan) return;
 
-            var mesaj = $"{secilenHayvan.HayvanAdi} adlý hayvaný silmek istediðinize emin misiniz?";
-            var sonuc = MessageBox.Show(mesaj, "Silme Onayý", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
+            var sonuc = MessageBox.Show($"{secilenHayvan.HayvanAdi} silinecek, emin misiniz?", "Silme Onayý", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (sonuc == DialogResult.Yes)
             {
-                try
+                if (_hayvanDal.Delete(secilenHayvan.HayvanId))
                 {
-                    bool basariliMi = _hayvanDal.Delete(secilenHayvan.HayvanId);
-                    if (basariliMi)
-                    {
-                        MessageBox.Show("Hayvan baþarýyla silindi.", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        HayvanlariListele(); // Listeyi günceller
-                    }
-                    else
-                    {
-                        MessageBox.Show("Hayvan silinirken bir sorun oluþtu.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Silme iþlemi sýrasýnda bir hata oluþtu:\n{ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Silindi.", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    HayvanlariListele();
                 }
             }
+        }
+
+        private void btnGuncelle_Click(object sender, EventArgs e)
+        {
+            if (dgvHayvanlar.CurrentRow?.DataBoundItem is not HayvanDetayDTO secilenHayvan) return;
+
+            using var form = new HayvanGuncelleForm(secilenHayvan.HayvanId);
+            if (form.ShowDialog() == DialogResult.OK) HayvanlariListele();
+        }
+
+        private void btnGecmis_Click(object sender, EventArgs e)
+        {
+            if (dgvHayvanlar.CurrentRow?.DataBoundItem is not HayvanDetayDTO secilenHayvan) return;
+
+            using var form = new MuayeneGecmisiForm(secilenHayvan.HayvanId, secilenHayvan.HayvanAdi);
+            form.ShowDialog();
         }
     }
 }

@@ -44,9 +44,10 @@ namespace VeterinerKlinigi
             if (string.IsNullOrWhiteSpace(txtAd.Text) ||
                 string.IsNullOrWhiteSpace(txtTur.Text) ||
                 string.IsNullOrWhiteSpace(txtCins.Text) ||
+                cmbCinsiyet.SelectedItem is null ||
                 cmbSahip.SelectedValue is null)
             {
-                MessageBox.Show("Ad, Tür, Cins ve Sahip alanlarý zorunludur.", "Uyarý",
+                MessageBox.Show("Ad, Tür, Cins, Cinsiyet ve Sahip alanlarý zorunludur.", "Uyarý",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -58,6 +59,7 @@ namespace VeterinerKlinigi
                     Ad = txtAd.Text.Trim(),
                     Tur = txtTur.Text.Trim(),
                     Cins = txtCins.Text.Trim(),
+                    Cinsiyet = cmbCinsiyet.SelectedItem.ToString(),
                     Yas = nudYas.Value > 0 ? Convert.ToInt32(nudYas.Value) : null,
                     Renk = txtRenk.Text.Trim(),
                     SahipId = Convert.ToInt32(cmbSahip.SelectedValue),

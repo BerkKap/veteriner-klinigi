@@ -1,14 +1,20 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
+using System.IO;
 
 namespace VeterinerKlinigi.DataAccess
 {
     public static class SqlHelper
     {
-        private const string ConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=VeterinerKlinigi;Integrated Security=True;TrustServerCertificate=True";
+        // Hocanýzýn istediði Dinamik (LocalDB) baðlantý dizesi:
+        private const string ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\VeterinerKlinigi.mdf;Integrated Security=True;MultipleActiveResultSets=True";
 
         public static SqlConnection BaglantiOlustur()
         {
+            // DataDirectory yolunu dinamik olarak projenin çalýþtýðý klasör olarak ayarlýyoruz
+            string yol = AppDomain.CurrentDomain.BaseDirectory;
+            AppDomain.CurrentDomain.SetData("DataDirectory", yol);
+            
             return new SqlConnection(ConnectionString);
         }
 
