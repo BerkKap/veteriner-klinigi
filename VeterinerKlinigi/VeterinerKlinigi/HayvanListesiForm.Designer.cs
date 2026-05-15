@@ -189,9 +189,9 @@ namespace VeterinerKlinigi
             lblSahipProfilResmi.AutoSize = true;
             lblSahipProfilResmi.Location = new Point(854, 45);
             lblSahipProfilResmi.Name = "lblSahipProfilResmi";
-            lblSahipProfilResmi.Size = new Size(106, 15);
+            lblSahipProfilResmi.Size = new Size(70, 15);
             lblSahipProfilResmi.TabIndex = 8;
-            lblSahipProfilResmi.Text = "Sahip Profil Resmi";
+            lblSahipProfilResmi.Text = "Hayvan Resmi";
             // 
             // HayvanListesiForm
             // 

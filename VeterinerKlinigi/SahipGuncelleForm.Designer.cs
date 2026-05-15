@@ -6,15 +6,14 @@ namespace VeterinerKlinigi
         private Label lblAd;
         private Label lblSoyad;
         private Label lblTelefon;
-        private Label lblCezaPuani;
         private Label lblProfil;
         private TextBox txtAd;
         private TextBox txtSoyad;
         private TextBox txtTelefon;
-        private TextBox txtCezaPuani;
         private Button btnGuncelle;
         private Button btnSil;
         private PictureBox pbProfil;
+        private Button btnResimSec;
 
         protected override void Dispose(bool disposing)
         {
@@ -31,15 +30,14 @@ namespace VeterinerKlinigi
             lblAd = new Label();
             lblSoyad = new Label();
             lblTelefon = new Label();
-            lblCezaPuani = new Label();
             lblProfil = new Label();
             txtAd = new TextBox();
             txtSoyad = new TextBox();
             txtTelefon = new TextBox();
-            txtCezaPuani = new TextBox();
             btnGuncelle = new Button();
             btnSil = new Button();
             pbProfil = new PictureBox();
+            btnResimSec = new Button();
             ((System.ComponentModel.ISupportInitialize)pbProfil).BeginInit();
             SuspendLayout();
             // 
@@ -69,15 +67,6 @@ namespace VeterinerKlinigi
             lblTelefon.Size = new Size(46, 15);
             lblTelefon.TabIndex = 2;
             lblTelefon.Text = "Telefon";
-            // 
-            // lblCezaPuani
-            // 
-            lblCezaPuani.AutoSize = true;
-            lblCezaPuani.Location = new Point(24, 128);
-            lblCezaPuani.Name = "lblCezaPuani";
-            lblCezaPuani.Size = new Size(66, 15);
-            lblCezaPuani.TabIndex = 3;
-            lblCezaPuani.Text = "Ceza Puaný";
             // 
             // lblProfil
             // 
@@ -109,13 +98,6 @@ namespace VeterinerKlinigi
             txtTelefon.Size = new Size(220, 23);
             txtTelefon.TabIndex = 7;
             // 
-            // txtCezaPuani
-            // 
-            txtCezaPuani.Location = new Point(110, 125);
-            txtCezaPuani.Name = "txtCezaPuani";
-            txtCezaPuani.Size = new Size(220, 23);
-            txtCezaPuani.TabIndex = 8;
-            // 
             // btnGuncelle
             // 
             btnGuncelle.Location = new Point(110, 170);
@@ -146,26 +128,35 @@ namespace VeterinerKlinigi
             pbProfil.TabIndex = 11;
             pbProfil.TabStop = false;
             // 
+            // btnResimSec
+            // 
+            btnResimSec.Location = new Point(380, 170);
+            btnResimSec.Name = "btnResimSec";
+            btnResimSec.Size = new Size(140, 30);
+            btnResimSec.TabIndex = 12;
+            btnResimSec.Text = "Resim Seç";
+            btnResimSec.UseVisualStyleBackColor = true;
+            btnResimSec.Click += btnResimSec_Click;
+            // 
             // SahipGuncelleForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(544, 224);
+            Controls.Add(btnResimSec);
             Controls.Add(pbProfil);
             Controls.Add(btnSil);
             Controls.Add(btnGuncelle);
-            Controls.Add(txtCezaPuani);
             Controls.Add(txtTelefon);
             Controls.Add(txtSoyad);
             Controls.Add(txtAd);
             Controls.Add(lblProfil);
-            Controls.Add(lblCezaPuani);
             Controls.Add(lblTelefon);
             Controls.Add(lblSoyad);
             Controls.Add(lblAd);
             Name = "SahipGuncelleForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Sahip Güncelle";
+            Text = "Sahip Guncelle";
             Load += SahipGuncelleForm_Load;
             ((System.ComponentModel.ISupportInitialize)pbProfil).EndInit();
             ResumeLayout(false);

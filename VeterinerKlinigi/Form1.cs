@@ -126,12 +126,7 @@ namespace VeterinerKlinigi
                 DataPropertyName = "Telefon"
             });
 
-            dgvSahipler.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colCezaPuani",
-                HeaderText = "Ceza Puaný",
-                DataPropertyName = "CezaPuani"
-            });
+            // "Ceza Puaný" sütunu istemediðiniz için kaldýrýldý.
         }
 
         private void dgvSahipler_CellDoubleClick(object sender, DataGridViewCellEventArgs e)

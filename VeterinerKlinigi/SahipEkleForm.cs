@@ -139,5 +139,10 @@ namespace VeterinerKlinigi
             DialogResult = DialogResult.Cancel;
             Close();
         }
+
+        private void lblProfil_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

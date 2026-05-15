@@ -10,6 +10,9 @@ namespace VeterinerKlinigi
         private readonly SahipDAL _sahipDal = new();
         private readonly int _secilenSahipId;
         private string _profilResmiDosyaAdi = "default.png";
+        private string _secilenDosyaYolu = string.Empty;
+        private int _cezaPuani = 0;
+        private const string VarsayilanResimDosyaAdi = "default.png";
 
         public SahipGuncelleForm(int sahipId)
         {
@@ -32,10 +35,12 @@ namespace VeterinerKlinigi
             txtAd.Text = sahip.Ad;
             txtSoyad.Text = sahip.Soyad;
             txtTelefon.Text = sahip.Telefon;
-            txtCezaPuani.Text = sahip.CezaPuani.ToString();
+
+            // Ceza puanýný UI'dan kaldýrdýk; mevcut deðeri sakla
+            _cezaPuani = sahip.CezaPuani;
 
             _profilResmiDosyaAdi = string.IsNullOrWhiteSpace(sahip.ProfilResmi)
-                ? "default.png"
+                ? VarsayilanResimDosyaAdi
                 : sahip.ProfilResmi;
 
             ProfilResminiGoster(_profilResmiDosyaAdi);
@@ -45,7 +50,7 @@ namespace VeterinerKlinigi
         {
             var imagesKlasoru = Path.Combine(Application.StartupPath, "Images");
             var resimYolu = Path.Combine(imagesKlasoru, dosyaAdi);
-            var varsayilanYol = Path.Combine(imagesKlasoru, "default.png");
+            var varsayilanYol = Path.Combine(imagesKlasoru, VarsayilanResimDosyaAdi);
 
             if (File.Exists(resimYolu))
             {
@@ -61,6 +66,21 @@ namespace VeterinerKlinigi
             }
         }
 
+        private void btnResimSec_Click(object sender, EventArgs e)
+        {
+            using var ofd = new OpenFileDialog
+            {
+                Filter = "Resim Dosyalarý|*.jpg;*.jpeg;*.png",
+                Title = "Profil Resmi Seçin"
+            };
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                _secilenDosyaYolu = ofd.FileName;
+                pbProfil.ImageLocation = _secilenDosyaYolu;
+            }
+        }
+
         private void btnGuncelle_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtAd.Text) || string.IsNullOrWhiteSpace(txtSoyad.Text))
@@ -69,21 +89,21 @@ namespace VeterinerKlinigi
                 return;
             }
 
-            if (!int.TryParse(txtCezaPuani.Text.Trim(), out var cezaPuani))
-            {
-                MessageBox.Show("Ceza puaný sayýsal olmalýdýr.");
-                return;
-            }
-
             try
             {
+                // Eðer kullanýcý yeni bir resim seçtiyse, uygulama klasörüne kopyala ve dosya adýný kullan
+                if (!string.IsNullOrWhiteSpace(_secilenDosyaYolu))
+                {
+                    _profilResmiDosyaAdi = ResmiKopyala(_secilenDosyaYolu);
+                }
+
                 var guncelSahip = new Sahip
                 {
                     SahipId = _secilenSahipId,
                     Ad = txtAd.Text.Trim(),
                     Soyad = txtSoyad.Text.Trim(),
                     Telefon = txtTelefon.Text.Trim(),
-                    CezaPuani = cezaPuani,
+                    CezaPuani = _cezaPuani,
                     ProfilResmi = _profilResmiDosyaAdi
                 };
 
@@ -100,6 +120,10 @@ namespace VeterinerKlinigi
                     MessageBox.Show("Güncelleme baþarýsýz.");
                 }
             }
+            catch (IOException ex)
+            {
+                MessageBox.Show("Dosya kopyalama hatasý: " + ex.Message);
+            }
             catch (SqlException ex)
             {
                 MessageBox.Show("Veritabaný hatasý: " + ex.Message);
@@ -108,6 +132,23 @@ namespace VeterinerKlinigi
             {
                 MessageBox.Show("Bilinmeyen hata: " + ex.Message);
             }
+        }
+
+        private static string ResmiKopyala(string kaynakDosyaYolu)
+        {
+            var uzanti = Path.GetExtension(kaynakDosyaYolu);
+            var yeniDosyaAdi = Guid.NewGuid() + uzanti;
+
+            var hedefKlasor = Path.Combine(Application.StartupPath, "Images");
+            if (!Directory.Exists(hedefKlasor))
+            {
+                Directory.CreateDirectory(hedefKlasor);
+            }
+
+            var hedefDosyaYolu = Path.Combine(hedefKlasor, yeniDosyaAdi);
+            File.Copy(kaynakDosyaYolu, hedefDosyaYolu);
+
+            return yeniDosyaAdi;
         }
 
         private void btnSil_Click(object sender, EventArgs e)

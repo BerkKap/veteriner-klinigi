@@ -70,6 +70,7 @@
             // 
             // txtAd
             // 
+            txtAd.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtAd.Location = new Point(88, 20);
             txtAd.Name = "txtAd";
             txtAd.Size = new Size(220, 23);
@@ -77,6 +78,7 @@
             // 
             // txtSoyad
             // 
+            txtSoyad.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtSoyad.Location = new Point(88, 56);
             txtSoyad.Name = "txtSoyad";
             txtSoyad.Size = new Size(220, 23);
@@ -84,6 +86,7 @@
             // 
             // txtTelefon
             // 
+            txtTelefon.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtTelefon.Location = new Point(88, 92);
             txtTelefon.Name = "txtTelefon";
             txtTelefon.Size = new Size(220, 23);
@@ -91,6 +94,7 @@
             // 
             // btnKaydet
             // 
+            btnKaydet.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnKaydet.Location = new Point(88, 186);
             btnKaydet.Name = "btnKaydet";
             btnKaydet.Size = new Size(100, 30);
@@ -101,6 +105,7 @@
             // 
             // btnIptal
             // 
+            btnIptal.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnIptal.Location = new Point(208, 186);
             btnIptal.Name = "btnIptal";
             btnIptal.Size = new Size(100, 30);
@@ -111,6 +116,7 @@
             // 
             // pbProfil
             // 
+            pbProfil.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             pbProfil.BorderStyle = BorderStyle.FixedSingle;
             pbProfil.Location = new Point(370, 24);
             pbProfil.Name = "pbProfil";
@@ -121,6 +127,7 @@
             // 
             // btnResimSec
             // 
+            btnResimSec.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnResimSec.Location = new Point(370, 186);
             btnResimSec.Name = "btnResimSec";
             btnResimSec.Size = new Size(140, 30);
@@ -131,12 +138,14 @@
             // 
             // lblProfil
             // 
+            lblProfil.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lblProfil.AutoSize = true;
             lblProfil.Location = new Point(370, 6);
             lblProfil.Name = "lblProfil";
-            lblProfil.Size = new Size(58, 15);
+            lblProfil.Size = new Size(70, 15);
             lblProfil.TabIndex = 6;
-            lblProfil.Text = "Profil Foto";
+            lblProfil.Text = "Hayvan Resmi";
+            lblProfil.Click += lblProfil_Click;
             // 
             // SahipEkleForm
             // 
@@ -159,17 +168,6 @@
             ((System.ComponentModel.ISupportInitialize)pbProfil).EndInit();
             ResumeLayout(false);
             PerformLayout();
-
-            pbProfil.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnResimSec.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            lblProfil.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-
-            txtAd.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtSoyad.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtTelefon.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-
-            btnKaydet.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnIptal.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
         }
     }
 }
