@@ -1,58 +1,35 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/rLpmofj1)
-# 🎓 Final Projesi — NTP2 Ders Projesi
+# 🏥 Veteriner Kliniği Yönetim Sistemi
 
-**Nesne Tabanlı Programlama II** dersi kapsamında geliştirilen bireysel final projesidir.
+C# ve Windows Forms kullanılarak geliştirilmiş, veteriner kliniklerinin günlük operasyonlarını yönetmek için tasarlanmış masaüstü uygulaması.
 
-**Öğrenci:** `[Berk Can Kapucu]` — `[243779058]`
+## 🖥️ Uygulama Hakkında
 
----
-
-## 📋 Proje Bilgileri
-
-> ⚠️ **Bu bölümü 4. hafta sonuna kadar doldurun!** Aşağıdaki yer tutucuları kendi projenize göre güncelleyin.
-
-| Bilgi                  | Açıklama                                       |
-| :--------------------- | :--------------------------------------------- |
-| **Proje Adı**          | `[Veteriner Kliniği Yönetim Sistemi]`          |
-| **Proje Konusu**       | `[Veteriner klinik süreçlerinin yönetimi]`     |
-| **Kısa Açıklama**      | `[Sahip, hayvan ve muayene kayıtlarını katmanlı mimari ile yönetir.]` |
-| **Tablo Sayısı**       | `[3]`                                          |
-| **Planlanan Tablolar** | `[Sahipler, Hayvanlar, Muayeneler]`            |
-
----
+Veteriner Kliniği Yönetim Sistemi; sahip kayıtları, hayvan takibi ve muayene geçmişi gibi klinik süreçlerini tek bir arayüzden yönetmenizi sağlar. N-Tier mimari ile geliştirilmiş olup katmanlı yapısı sayesinde sürdürülebilir ve genişletilebilir bir kod tabanına sahiptir.
 
 ## 🏗️ Proje Mimarisi
+VeterinerKlinigi/
+├── VeterinerKlinigi.Entities/      → Veri modelleri (Sahip, Hayvan, Muayene)
+├── VeterinerKlinigi.DataAccess/    → Veritabanı işlemleri (DAL sınıfları, SqlHelper)
+└── VeterinerKlinigi/               → Windows Forms arayüzü (Formlar, ThemeHelper)
+## 🛠️ Kullanılan Teknolojiler
 
-```
-ProjeAdi/
-├── ProjeAdi.Entities/     → Veri taşıyıcı sınıflar
-├── ProjeAdi.DataAccess/   → Veritabanı işlemleri (DAL sınıfları, SqlHelper)
-└── ProjeAdi.UI/           → Windows Forms arayüzü (Formlar)
-```
+- **Dil:** C# / .NET 8
+- **Arayüz:** Windows Forms
+- **Veritabanı:** SQL Server LocalDB
+- **Veri Erişimi:** ADO.NET
+- **Mimari:** N-Tier (Entities, DataAccess, UI)
 
-**Teknolojiler:** C# · .NET 8 · Windows Forms · ADO.NET · SQL Server
+## 📦 Özellikler
 
----
+- 👤 Sahip kaydı oluşturma, düzenleme ve silme
+- 🐾 Hayvanlara ait detaylı profil ve geçmiş takibi
+- 🩺 Muayene kaydı ekleme ve listeleme
+- 🔍 Kayıtlar arasında arama ve filtreleme
+- 💾 LocalDB ile kurulum gerektirmeyen taşınabilir veritabanı
+- 📦 .msi Setup paketi ile tek tıkla kurulum
 
-## ✅ Minimum Gereksinimler
+## 🚀 Kurulum
 
-- [ ] En az **3 ilişkili tablo** (Foreign Key ile bağlı)
-- [ ] Tam **CRUD** işlemleri (Create, Read, Update, Delete)
-- [ ] **Katmanlı Mimari** (Entities, DataAccess, UI)
-- [ ] **SqlHelper** ile merkezi bağlantı yönetimi
-- [ ] **Parametreli sorgular** (SQL Injection koruması)
-- [ ] **using** bloğu ile kaynak yönetimi
-- [ ] **Düzenli commit geçmişi** (haftalık ilerleme)
-
----
-
-## ⚠️ Önemli Kurallar
-
-1. **Commit mesajları anlamlı olmalıdır.** `asdf`, `güncelleme`, `son hali` gibi mesajlar kabul edilmez.
-2. **`bin/`, `obj/`, `.vs/` klasörlerini Push etmeyin!** `.gitignore` dosyasını silmeyin.
-3. **Her hafta en az bir commit** beklenmektedir.
-4. Proje sunumu **ders saatinde bireysel** olarak yapılacaktır.
-
----
-
-*Afyon Kocatepe Üniversitesi — Sinanpaşa MYO — 2025-2026 Bahar Dönemi*
+1. [Releases](../../releases) sayfasından `.msi` dosyasını indirin
+2. Kurulum sihirbazını takip edin
+3. Masaüstündeki kısayoldan uygulamayı başlatın
